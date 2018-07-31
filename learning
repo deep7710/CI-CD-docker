@@ -38,3 +38,7 @@ the libltdl.so.7 on host is mapped on the jenkins container so that it can acces
 1. do not use --privileged with docker build command.
 2. define all user id and password in jenkins before using them in jenkinsfile.
 
+
+---------------------------------------------------------------------
+SONARQUBE did not work on t2.micro as the memory requirments are quite high for sonarqube..it requires a min. of 2GB ram. the container will
+exit with error code Exited(137) meaning the containers memory reqmnt were not met and it was killed by OOMkiller(out of memory)

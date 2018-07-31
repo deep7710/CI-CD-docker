@@ -1,0 +1,40 @@
+-------------------------------------------------------
+         CI-CD-DOCKER LEARNINGS 
+-------------------------------------------------------
+
+1. while run container using the jenkins image.
+
+a. /var/jenkins_home/workspace/ci-cd-docker@tmp/durable-13daccaa/script.sh: 2: /var/jenkins_home/workspace/ci-cd-docker@tmp/durable-13daccaa/script.sh: docker: not found
+  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+--this error occurs when the jenkins running within container is not able to talk to the docker daemon on the host
+
+to resolve this error execute the docker run command like this:
+
+docker run --privileged --user=root -p 8080:8080 -p 50000:50000 -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/jenkins:/var/jenkins_home -v /bin/docker:/bin/docker -v "$HOME":/home -d cd14cecfdb3
+
+here the /var/run/docker.sock and /bin/docker will allow allow jenkins in container to access the docker in the host..it is called mounting volumes.
+
+--user=root is used to run the container as root user having root privileges
+
+ignore "$HOME":/home
+
+
+b. docker: error while loading shared libraries: libltdl.so.7: cannot open shared object file: No such file or directory
+   -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   
+--this error occurs when jenkins in container does not have libltdl.so.7 dependency for docker available to it
+
+it is solved by executing the docker run command as below:
+
+docker run --privileged --user=root -p 8080:8080 -p 50000:50000 -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/jenkins:/var/jenkins_home -v /bin/docker:/bin/docker -v /usr/lib64/libltdl.so.7:/usr/lib/libltdl.so.7 -d cd14cecfdb3
+
+the libltdl.so.7 on host is mapped on the jenkins container so that it can access the required dependency for running docker.
+
+
+
+
+##
+1. do not use --privileged with docker build command.
+2. define all user id and password in jenkins before using them in jenkinsfile.
+

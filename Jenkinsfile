@@ -7,7 +7,7 @@ node {
 
     stage('Initialize'){
         def dockerHome = tool 'docker'
-        def mavenHome  = tool 'myMaven'
+        def mavenHome  = tool 'maven354'
         env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
     }
 
@@ -19,13 +19,7 @@ node {
         sh "mvn clean install"
     }
 
-    stage('Sonar'){
-        try {
-            sh "mvn sonar:sonar"
-        } catch(error){
-            echo "The sonar server could not be reached ${error}"
-        }
-     }
+   
 
     stage("Image Prune"){
         imagePrune(CONTAINER_NAME)

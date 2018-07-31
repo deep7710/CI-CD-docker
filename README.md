@@ -173,9 +173,9 @@ After that, when a Deployment  is done to the remote repository or when you manu
 
 After Deployment is done and Container is running , You can check it by URL and Port number on which the service is running
 
- http://ec2-50-16-10-93.compute-1.amazonaws.com:8090/
+http://13.232.174.229:8090/
 
-![](images/017.png)
+![](images/017.PNG)
 
 
 ## Review important points of the Jenkins file
